@@ -1,16 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ApolloProvider } from "react-apollo";
+import ApolloClient, { InMemoryCache } from "apollo-boost";
+
+const cache = new InMemoryCache();
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql",
+  cache,
+});
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  /**
+   * NOTE: React.StrictModeを挟むとGraphQLのQueryでdataがundefinedになる
+   * ref: https://github.com/apollographql/apollo-client/issues/9602
+   */
+  <ApolloProvider client={client}>
     <App />
-  </React.StrictMode>
+  </ApolloProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
