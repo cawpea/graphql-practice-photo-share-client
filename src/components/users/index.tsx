@@ -5,8 +5,10 @@ import { UserList } from "./components";
 export const Users = () => {
   const result = useQuery(ROOT_QUERY);
   const { data, loading } = result;
+  if (!data) {
+    return <p>Loading</p>;
+  }
   const { allUsers } = data;
-  console.log("Users", result);
 
   return (
     <div>
